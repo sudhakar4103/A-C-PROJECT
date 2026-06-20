@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MediScanAI | Secure Login</title>
+    <!-- Bootstrap 5 CSS + Icons + Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: clean Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f5f0;  /* soft milky cream base */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* subtle abstract medical background pattern */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 10% 20%, rgba(155, 189, 142, 0.08) 2%, transparent 2.5%),
+                              radial-gradient(circle at 85% 65%, rgba(100, 130, 80, 0.06) 1.8%, transparent 2.2%);
+            background-size: 48px 48px, 36px 36px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            padding: 2rem 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* premium card - milky white, soft shadows, elegant rounding */
+        .glass-card {
+            background: rgba(255, 255, 250, 0.98);
+            backdrop-filter: blur(0px);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(235, 228, 214, 0.6);
+            transition: transform 0.2s ease, box-shadow 0.2s;
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 30px 50px -18px rgba(70, 90, 60, 0.18);
+        }
+
+        .card-inner {
+            padding: 2.5rem 2rem;
+        }
+
+        /* brand icon + headline */
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(145deg, #ecf6e6, #e2efda);
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem auto;
+            color: #598b62;
+            font-size: 2.3rem;
+            box-shadow: 0 6px 12px -8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            font-weight: 700;
+            font-size: 1.9rem;
+            letter-spacing: -0.3px;
+            background: linear-gradient(125deg, #3d5c46, #7aa56e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.35rem;
+        }
+
+        .welcome-text {
+            color: #6f8268;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* form fields - soft modern */
+        .form-floating-custom {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9bb48e;
+            font-size: 1.1rem;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .form-control-clean {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 1.5px solid #e9e4db;
+            border-radius: 60px;
+            background-color: #ffffff;
+            transition: all 0.2s;
+            color: #2c3e2f;
+        }
+
+        .form-control-clean:focus {
+            outline: none;
+            border-color: #9ebf91;
+            box-shadow: 0 0 0 4px rgba(130, 170, 122, 0.15);
+            background-color: #ffffff;
+        }
+
+        .form-control-clean::placeholder {
+            color: #bfcdb6;
+            font-weight: 400;
+            font-size: 0.9rem;
+        }
+
+        /* login button - gradient milky green */
+        .btn-login {
+            background: linear-gradient(105deg, #6f9a6b, #87b37c);
+            border: none;
+            padding: 12px 0;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: white;
+            transition: all 0.25s;
+            box-shadow: 0 6px 14px rgba(100, 130, 80, 0.25);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(105deg, #5f885a, #78a16b);
+            box-shadow: 0 12px 22px rgba(90, 120, 70, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(1px);
+        }
+
+        /* flash message styling */
+        .alert-custom {
+            border-radius: 50px;
+            background: #fef7e0;
+            border-left: 5px solid #e0b84d;
+            color: #7a681e;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.7rem 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-custom i {
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+
+        .link-soft {
+            color: #6f8f66;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .link-soft:hover {
+            color: #446b3c;
+            text-decoration: underline;
+        }
+
+        hr.divider {
+            margin: 1.6rem 0;
+            background-color: #eae3d7;
+            height: 1px;
+            opacity: 0.8;
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f5f7f2;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .back-home:hover {
+            background: #eef3e8;
+            color: #3a6642;
+        }
+
+        /* responsive */
+        @media (max-width: 576px) {
+            .card-inner {
+                padding: 1.8rem 1.5rem;
+            }
+            .logo-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 1.8rem;
+            }
+            h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="glass-card">
+                        <div class="card-inner">
+                            <!-- brand mark -->
+                            <div class="text-center">
+                                <div class="logo-icon">
+                                    <i class="fas fa-stethoscope"></i>
+                                </div>
+                                <h2>Welcome back</h2>
+                                <p class="welcome-text">Sign in to access AI diagnosis tools</p>
+                            </div>
+
+                            <!-- Flash messages (dynamic with categories) -->
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-custom d-flex align-items-center" role="alert">
+                                            <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} me-2"></i>
+                                            <span>{{ message }}</span>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+
+                            <!-- login form -->
+                            <form method="POST" action="/login">
+                                <!-- username field with icon -->
+                                <div class="form-floating-custom">
+                                    <i class="fas fa-user input-icon"></i>
+                                    <input type="text" class="form-control-clean" id="username" name="username" placeholder="Username or email" required autofocus>
+                                </div>
+                                <!-- password field with icon -->
+                                <div class="form-floating-custom">
+                                    <i class="fas fa-lock input-icon"></i>
+                                    <input type="password" class="form-control-clean" id="password" name="password" placeholder="Password" required>
+                                </div>
+                                <!-- remember me row (optional visual) -->
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="rememberCheck" style="border-color:#bfd6b4; background-color:#fefcf8;">
+                                        <label class="form-check-label text-secondary small" for="rememberCheck">
+                                            Keep me logged in
+                                        </label>
+                                    </div>
+                                    <a href="#" class="link-soft small">Forgot password?</a>
+                                </div>
+                                <!-- login button -->
+                                <button type="submit" class="btn btn-login w-100">
+                                    <i class="fas fa-arrow-right-to-bracket me-2"></i> Sign in
+                                </button>
+                            </form>
+
+                            <!-- registration prompt -->
+                            <hr class="divider">
+                            <div class="text-center">
+                                <p class="mb-3 text-secondary" style="font-size: 0.9rem;">New to MediScanAI?</p>
+                                <a href="/register" class="btn btn-outline-secondary rounded-pill px-4 py-2" style="border-color: #d9e2d1; color: #557a4e; background: #fefcf8; font-weight: 500;">
+                                    <i class="fas fa-user-plus me-2"></i>Create free account
+                                </a>
+                            </div>
+
+                            <!-- back to home link with soft button style -->
+                            <div class="text-center mt-4">
+                                <a href="/" class="back-home text-decoration-none text-secondary">
+                                    <i class="fas fa-chevron-left me-1"></i> Back to Home
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- extra info: security note (milky) -->
+                    <div class="text-center mt-4">
+                        <small class="text-muted d-inline-flex align-items-center gap-2 bg-white bg-opacity-50 px-3 py-2 rounded-pill" style="backdrop-filter: blur(2px);">
+                            <i class="fas fa-shield-alt text-success"></i> Local account access for the screening workspace
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS bundle (minimal) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Optional: smooth client-side interaction, focus handling, no backend override.
+        (function() {
+            // Add subtle floating label / placeholder styling is already done.
+            // For demo, add a tiny interactive effect on the card.
+            const card = document.querySelector('.glass-card');
+            if(card) {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transition = 'transform 0.25s ease, box-shadow 0.3s';
+                });
+            }
+
+            // For improved UX, if there are any flash messages, auto-fade after 5 seconds? (optional)
+            const flashAlerts = document.querySelectorAll('.alert-custom');
+            if(flashAlerts.length) {
+                setTimeout(() => {
+                    flashAlerts.forEach(alert => {
+                        alert.style.transition = 'opacity 0.5s ease';
+                        alert.style.opacity = '0';
+                        setTimeout(() => {
+                            if(alert.parentNode) alert.remove();
+                        }, 500);
+                    });
+                }, 4500);
+            }
+
+            // Prevent double submit on form (nice touch)
+            const loginForm = document.querySelector('form');
+            if(loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    const submitBtn = loginForm.querySelector('.btn-login');
+                    if(submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Signing in...';
+                        // Re-enable after 3 sec if form submission fails (fallback)
+                        setTimeout(() => {
+                            if(submitBtn.disabled) {
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket me-2"></i> Sign in';
+                            }
+                        }, 5000);
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

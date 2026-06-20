@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MediScanAI | Create Account</title>
+    <!-- Bootstrap 5 CSS + Icons + Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: clean Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f5f0;  /* soft milky cream base - consistent with login/home */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* subtle abstract medical pattern overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 15% 30%, rgba(130, 170, 122, 0.06) 1.8%, transparent 2%),
+                              radial-gradient(circle at 80% 70%, rgba(100, 130, 80, 0.05) 2%, transparent 2.5%);
+            background-size: 52px 52px, 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .register-wrapper {
+            width: 100%;
+            padding: 2rem 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* premium milky-white card */
+        .glass-card {
+            background: rgba(255, 255, 250, 0.98);
+            backdrop-filter: blur(0px);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(235, 228, 214, 0.6);
+            transition: transform 0.2s ease, box-shadow 0.2s;
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 30px 50px -18px rgba(70, 90, 60, 0.16);
+        }
+
+        .card-inner {
+            padding: 2.5rem 2rem;
+        }
+
+        /* brand icon */
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(145deg, #ecf6e6, #e2efda);
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem auto;
+            color: #598b62;
+            font-size: 2.3rem;
+            box-shadow: 0 6px 12px -8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            font-weight: 700;
+            font-size: 1.9rem;
+            letter-spacing: -0.3px;
+            background: linear-gradient(125deg, #3d5c46, #7aa56e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.35rem;
+        }
+
+        .subhead-text {
+            color: #6f8268;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* modern form fields with icons */
+        .input-group-custom {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9bb48e;
+            font-size: 1.1rem;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .form-control-clean {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 1.5px solid #e9e4db;
+            border-radius: 60px;
+            background-color: #ffffff;
+            transition: all 0.2s;
+            color: #2c3e2f;
+        }
+
+        .form-control-clean:focus {
+            outline: none;
+            border-color: #9ebf91;
+            box-shadow: 0 0 0 4px rgba(130, 170, 122, 0.15);
+            background-color: #ffffff;
+        }
+
+        .form-control-clean::placeholder {
+            color: #bfcdb6;
+            font-weight: 400;
+            font-size: 0.9rem;
+        }
+
+        /* optional email hint */
+        .optional-badge {
+            font-size: 0.7rem;
+            background: #f0f5eb;
+            padding: 2px 8px;
+            border-radius: 30px;
+            margin-left: 8px;
+            font-weight: 400;
+            color: #6d8f66;
+        }
+
+        /* register button - gradient milky green */
+        .btn-register {
+            background: linear-gradient(105deg, #6f9a6b, #87b37c);
+            border: none;
+            padding: 12px 0;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: white;
+            transition: all 0.25s;
+            box-shadow: 0 6px 14px rgba(100, 130, 80, 0.25);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(105deg, #5f885a, #78a16b);
+            box-shadow: 0 12px 22px rgba(90, 120, 70, 0.3);
+        }
+
+        .btn-register:active {
+            transform: translateY(1px);
+        }
+
+        /* flash messages styling */
+        .alert-custom {
+            border-radius: 50px;
+            background: #fef7e0;
+            border-left: 5px solid #e0b84d;
+            color: #7a681e;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.7rem 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-custom i {
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+
+        .alert-success-custom {
+            background: #e6f4e0;
+            border-left-color: #7faa6e;
+            color: #3a6742;
+        }
+
+        .link-soft {
+            color: #6f8f66;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .link-soft:hover {
+            color: #446b3c;
+            text-decoration: underline;
+        }
+
+        hr.divider {
+            margin: 1.6rem 0;
+            background-color: #eae3d7;
+            height: 1px;
+            opacity: 0.8;
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f5f7f2;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: #5d7656;
+        }
+
+        .back-home:hover {
+            background: #eef3e8;
+            color: #3a6642;
+        }
+
+        /* password strength indicator (soft UX) */
+        .password-hint {
+            font-size: 0.7rem;
+            margin-top: 6px;
+            margin-left: 12px;
+            color: #8da682;
+        }
+
+        /* responsive */
+        @media (max-width: 576px) {
+            .card-inner {
+                padding: 1.8rem 1.5rem;
+            }
+            .logo-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 1.8rem;
+            }
+            h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-wrapper">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="glass-card">
+                        <div class="card-inner">
+                            <!-- brand header -->
+                            <div class="text-center">
+                                <div class="logo-icon">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                                <h2>Join MediScanAI</h2>
+                                <p class="subhead-text">Start your AI-powered health journey</p>
+                            </div>
+
+                            <!-- Flash messages with improved styling -->
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-custom {% if category == 'success' %}alert-success-custom{% endif %}" role="alert">
+                                            <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} me-2"></i>
+                                            <span>{{ message }}</span>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+
+                            <!-- Registration Form -->
+                            <form method="POST" action="/register">
+                                <!-- Username field with icon -->
+                                <div class="input-group-custom">
+                                    <i class="fas fa-user input-icon"></i>
+                                    <input type="text" class="form-control-clean" id="username" name="username" 
+                                           placeholder="Username" required autofocus>
+                                </div>
+
+                                <!-- Email field with icon (optional) -->
+                                <div class="input-group-custom">
+                                    <i class="fas fa-envelope input-icon"></i>
+                                    <input type="email" class="form-control-clean" id="email" name="email" 
+                                           placeholder="Email address">
+                                    <span class="optional-badge" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); pointer-events: none;">Optional</span>
+                                </div>
+
+                                <!-- Password field with icon -->
+                                <div class="input-group-custom">
+                                    <i class="fas fa-lock input-icon"></i>
+                                    <input type="password" class="form-control-clean" id="password" name="password" 
+                                           placeholder="Password" required>
+                                </div>
+                                <div class="password-hint">
+                                    <i class="fas fa-shield-alt me-1" style="font-size: 0.65rem;"></i> Use at least 6 characters
+                                </div>
+
+                                <!-- Terms & privacy note (clean) -->
+                                <div class="form-check mt-3 mb-4">
+                                    <input class="form-check-input" type="checkbox" id="termsCheck" required style="border-color:#bfd6b4;">
+                                    <label class="form-check-label text-secondary small" for="termsCheck">
+                                        I agree to the <a href="#" class="link-soft">Terms of Service</a> and <a href="#" class="link-soft">Privacy Policy</a>
+                                    </label>
+                                </div>
+
+                                <!-- Register button -->
+                                <button type="submit" class="btn btn-register w-100">
+                                    <i class="fas fa-user-plus me-2"></i> Create account
+                                </button>
+                            </form>
+
+                            <!-- Login redirect -->
+                            <hr class="divider">
+                            <div class="text-center">
+                                <p class="mb-3 text-secondary" style="font-size: 0.9rem;">Already have an account?</p>
+                                <a href="/login" class="btn btn-outline-secondary rounded-pill px-4 py-2" style="border-color: #d9e2d1; color: #557a4e; background: #fefcf8; font-weight: 500;">
+                                    <i class="fas fa-arrow-right-to-bracket me-2"></i>Sign in instead
+                                </a>
+                            </div>
+
+                            <!-- Back to home link -->
+                            <div class="text-center mt-4">
+                                <a href="/" class="back-home text-decoration-none">
+                                    <i class="fas fa-chevron-left me-1"></i> Back to Home
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- extra trust badge -->
+                    <div class="text-center mt-4">
+                        <small class="text-muted d-inline-flex align-items-center gap-2 bg-white bg-opacity-50 px-3 py-2 rounded-pill" style="backdrop-filter: blur(2px);">
+                            <i class="fas fa-laptop-medical text-success"></i> Create an account for the local screening workspace
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function() {
+            // Smooth interactions & flash message auto-dismiss
+            const card = document.querySelector('.glass-card');
+            if(card) {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transition = 'transform 0.25s ease, box-shadow 0.3s';
+                });
+            }
+
+            // Auto-dismiss flash messages after 4.5 seconds
+            const flashAlerts = document.querySelectorAll('.alert-custom');
+            if(flashAlerts.length) {
+                setTimeout(() => {
+                    flashAlerts.forEach(alert => {
+                        alert.style.transition = 'opacity 0.5s ease';
+                        alert.style.opacity = '0';
+                        setTimeout(() => {
+                            if(alert.parentNode) alert.remove();
+                        }, 500);
+                    });
+                }, 4500);
+            }
+
+            // Form submission handling: disable double click and show loading state
+            const registerForm = document.querySelector('form');
+            if(registerForm) {
+                registerForm.addEventListener('submit', (e) => {
+                    const termsCheck = document.getElementById('termsCheck');
+                    if(termsCheck && !termsCheck.checked) {
+                        e.preventDefault();
+                        // Show inline friendly warning if terms not checked
+                        let warningDiv = document.querySelector('.terms-warning');
+                        if(!warningDiv) {
+                            warningDiv = document.createElement('div');
+                            warningDiv.className = 'alert alert-custom mt-2 mb-0 py-2';
+                            warningDiv.style.backgroundColor = '#fff0e0';
+                            warningDiv.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i> Please accept the Terms to continue.';
+                            registerForm.insertBefore(warningDiv, registerForm.querySelector('button'));
+                            setTimeout(() => {
+                                if(warningDiv) warningDiv.style.opacity = '0';
+                                setTimeout(() => { if(warningDiv) warningDiv.remove(); }, 400);
+                            }, 3000);
+                        }
+                        return;
+                    }
+                    
+                    const submitBtn = registerForm.querySelector('.btn-register');
+                    if(submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Creating account...';
+                        // Fallback re-enable after 7 seconds if something goes wrong
+                        setTimeout(() => {
+                            if(submitBtn.disabled) {
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = '<i class="fas fa-user-plus me-2"></i> Create account';
+                            }
+                        }, 7000);
+                    }
+                });
+            }
+
+            // Simple password hint / optional dynamic (just visual)
+            const pwdField = document.getElementById('password');
+            if(pwdField) {
+                pwdField.addEventListener('input', function(e) {
+                    const val = e.target.value;
+                    const hintSpan = document.querySelector('.password-hint');
+                    if(hintSpan) {
+                        if(val.length > 0 && val.length < 6) {
+                            hintSpan.style.color = '#c97e5a';
+                            hintSpan.innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i> Password should be at least 6 characters';
+                        } else if(val.length >= 6) {
+                            hintSpan.style.color = '#8da682';
+                            hintSpan.innerHTML = '<i class="fas fa-check-circle me-1"></i> Strong enough';
+                        } else {
+                            hintSpan.style.color = '#8da682';
+                            hintSpan.innerHTML = '<i class="fas fa-shield-alt me-1"></i> Use at least 6 characters';
+                        }
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MediScanAI | Dashboard</title>
+    <!-- Bootstrap 5 CSS + Icons + Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: clean Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #faf8f3;  /* warm milky background */
+            min-height: 100vh;
+        }
+
+        /* navbar - milky clean */
+        .navbar-custom {
+            background: rgba(255, 255, 248, 0.96);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02), 0 1px 0 rgba(0, 0, 0, 0.03);
+            padding: 0.7rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: -0.3px;
+            background: linear-gradient(125deg, #5f7f6b, #9bbf8f);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .navbar-brand i {
+            color: #6f9e7c;
+            margin-right: 6px;
+            background: none;
+            -webkit-background-clip: unset;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: #4a5b4c !important;
+            border-radius: 40px;
+            transition: all 0.2s;
+            padding: 0.5rem 1rem;
+        }
+
+        .nav-link:hover {
+            background: #eef3e9;
+            color: #3b6e47 !important;
+        }
+
+        .user-greeting {
+            background: #ecf5e7;
+            border-radius: 40px;
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #446a3e;
+        }
+
+        .user-greeting i {
+            margin-right: 6px;
+            color: #6d9a60;
+        }
+
+        /* dashboard header - soft gradient milky to light sage */
+        .dashboard-header {
+            background: linear-gradient(115deg, #f3efe7 0%, #eef3e8 100%);
+            color: #3d5a42;
+            padding: 3rem 0 2.5rem;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid #e3ddcf;
+        }
+
+        .dashboard-header h1 {
+            font-weight: 700;
+            font-size: 2.4rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #3d5c46, #6f9668);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        /* diagnosis cards - premium milky design */
+        .diagnosis-card {
+            border: none;
+            border-radius: 1.75rem;
+            background: #fffffffc;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            cursor: pointer;
+            margin-bottom: 30px;
+            box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            border: 1px solid #f0eadf;
+        }
+
+        .diagnosis-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 36px -16px rgba(80, 100, 70, 0.2);
+            border-color: #e2dacb;
+        }
+
+        .card-body-custom {
+            padding: 2rem 1.8rem;
+            text-align: center;
+        }
+
+        .card-icon-wrapper {
+            width: 85px;
+            height: 85px;
+            background: #f2f8ed;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.3rem auto;
+            font-size: 2.8rem;
+            transition: all 0.2s;
+        }
+
+        .diagnosis-card:hover .card-icon-wrapper {
+            background: #e9f2e2;
+            transform: scale(1.02);
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: #2c5236;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-text {
+            color: #6f7e68;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-diagnosis {
+            background: #ecf6e6;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #467a4c;
+            transition: all 0.25s;
+            font-size: 0.9rem;
+        }
+
+        .btn-diagnosis i {
+            margin-right: 8px;
+        }
+
+        .diagnosis-card:hover .btn-diagnosis {
+            background: #e0ecd6;
+            color: #2c6438;
+            transform: translateY(-2px);
+        }
+
+        /* flash messages */
+        .alert-custom {
+            border-radius: 60px;
+            background: #fef7e8;
+            border-left: 5px solid #e0b84d;
+            color: #7a681e;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.7rem 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* stats row - milky cards */
+        .stats-card {
+            background: #ffffffdd;
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            text-align: center;
+            backdrop-filter: blur(2px);
+            border: 1px solid #ede7db;
+            transition: all 0.2s;
+        }
+
+        .stats-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #517a4b;
+        }
+
+        /* footer */
+        .footer {
+            background: #ffffffcc;
+            margin-top: 3rem;
+            padding: 1.6rem 0;
+            color: #6c7e66;
+            border-top: 1px solid #eae2d4;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header h1 {
+                font-size: 1.8rem;
+            }
+            .card-body-custom {
+                padding: 1.5rem;
+            }
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation: milky consistent -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard">
+                <i class="fas fa-stethoscope"></i> MediScan<span style="font-weight:600">AI</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dashboardNav" aria-controls="dashboardNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon" style="filter: invert(0.4);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="dashboardNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item">
+                        <span class="user-greeting">
+                            <i class="fas fa-user-circle"></i> Welcome, {{ username }}!
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard header section (soft milky) -->
+    <div class="dashboard-header">
+        <div class="container text-center">
+            <h1 class="display-5 fw-bold"><i class="fas fa-chalkboard-user me-2" style="font-size: 2rem;"></i> Medical Diagnosis Dashboard</h1>
+            <p class="lead mt-2" style="color: #5e7462;">Select a condition to start your AI-powered analysis</p>
+            <div class="mt-3 d-flex justify-content-center gap-2 flex-wrap">
+                <span class="badge bg-light text-dark rounded-pill px-3 py-2" style="background:#eef3ea!important; color:#4f6b48;"><i class="fas fa-microchip me-1"></i> Deep Learning Ready</span>
+                <span class="badge bg-light text-dark rounded-pill px-3 py-2" style="background:#eef3ea!important; color:#4f6b48;"><i class="fas fa-chart-line me-1"></i> Instant Results</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Flash messages with elegant style -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-custom d-flex align-items-center" role="alert">
+                        <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} me-2"></i>
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Quick stats row - extra clean -->
+        <div class="row g-3 mb-5">
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <i class="fas fa-microscope fs-3 mb-2" style="color:#7faa6e;"></i>
+                    <div class="stats-number">2</div>
+                    <div class="small text-secondary">Advanced Models</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <i class="fas fa-chart-simple fs-3 mb-2" style="color:#7faa6e;"></i>
+                    <div class="stats-number">94-96%</div>
+                    <div class="small text-secondary">Accuracy Range</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <i class="fas fa-cloud-upload-alt fs-3 mb-2" style="color:#7faa6e;"></i>
+                    <div class="stats-number">5s</div>
+                    <div class="small text-secondary">Avg Analysis Time</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main diagnosis cards -->
+        <div class="row">
+            <!-- Anemia Detection Card -->
+            <div class="col-md-6">
+                <div class="diagnosis-card" onclick="location.href='/anemia'">
+                    <div class="card-body-custom">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-tint" style="color: #b9635e;"></i>
+                        </div>
+                        <h3 class="card-title">Anemia Detection</h3>
+                        <p class="card-text">
+                            Upload conjunctival images or eye photos. The MobileNetV3 model returns an anemia or no-anemia screening result with a confidence score.
+                        </p>
+                        <div class="d-flex justify-content-center gap-2 mb-3 flex-wrap">
+                            <span class="badge rounded-pill px-3 py-2" style="background:#f4faf0; color:#5f8a56;"><i class="fas fa-microchip me-1"></i> MobileNetV3</span>
+                            <span class="badge rounded-pill px-3 py-2" style="background:#f4faf0; color:#5f8a56;"><i class="fas fa-chart-line me-1"></i> Confidence score</span>
+                        </div>
+                        <button class="btn btn-diagnosis">
+                            <i class="fas fa-upload"></i> Start Diagnosis
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cataract Detection Card -->
+            <div class="col-md-6">
+                <div class="diagnosis-card" onclick="location.href='/cataract'">
+                    <div class="card-body-custom">
+                        <div class="card-icon-wrapper">
+                            <i class="fas fa-eye" style="color: #5f8b66;"></i>
+                        </div>
+                        <h3 class="card-title">Cataract Detection</h3>
+                        <p class="card-text">
+                            Upload eye images for cataract screening. EfficientNetB0 returns a cataract or normal classification with a confidence score.
+                        </p>
+                        <div class="d-flex justify-content-center gap-2 mb-3 flex-wrap">
+                            <span class="badge rounded-pill px-3 py-2" style="background:#f4faf0; color:#5f8a56;"><i class="fas fa-microchip me-1"></i> EfficientNetB0</span>
+                            <span class="badge rounded-pill px-3 py-2" style="background:#f4faf0; color:#5f8a56;"><i class="fas fa-eye me-1"></i> Binary screening</span>
+                        </div>
+                        <button class="btn btn-diagnosis">
+                            <i class="fas fa-camera"></i> Start Diagnosis
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Info / Tip Section (milky card) -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="bg-white p-4 rounded-4 shadow-sm border" style="background: #fffdf9; border-color: #ede5d8 !important;">
+                    <div class="row align-items-center">
+                        <div class="col-md-2 text-center text-md-start">
+                            <i class="fas fa-robot" style="font-size: 2.8rem; color: #9bbf8e;"></i>
+                        </div>
+                        <div class="col-md-7">
+                            <h6 class="fw-semibold mb-1" style="color: #3c5f42;"><i class="fas fa-flask me-1"></i> How it works</h6>
+                            <p class="mb-0 text-secondary small">Upload a medical image, review the screening result and confidence score, and use the suggested follow-up guidance as a starting point. Always consult a physician for final clinical decisions.</p>
+                        </div>
+                        <div class="col-md-3 text-center text-md-end mt-3 mt-md-0">
+                            <a href="#" class="text-decoration-none small fw-semibold" style="color:#6f9a6b;"><i class="fas fa-book-open me-1"></i> Model details →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <span><i class="fas fa-microscope me-1"></i> MediScanAI · Intelligent medical diagnosis</span><br>
+                    <small>Powered by MobileNetV3 & EfficientNetB0 | v2.0</small>
+                </div>
+                <div class="col-md-6 text-md-end mt-2 mt-md-0">
+                    <a href="#" class="text-decoration-none text-secondary me-3"><i class="fas fa-shield-alt"></i> Privacy</a>
+                    <a href="#" class="text-decoration-none text-secondary me-3"><i class="fas fa-chart-line"></i> Performance</a>
+                    <a href="#" class="text-decoration-none text-secondary"><i class="fas fa-headset"></i> Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function() {
+            // Interactive enhancement: ensure card clicks are smooth, plus flash message auto-dismiss
+            const cards = document.querySelectorAll('.diagnosis-card');
+            cards.forEach(card => {
+                // avoid double trigger if button inside also triggers navigation, but overall fine.
+                card.addEventListener('click', (e) => {
+                    // if the click is on the button or its child, we let the button's own onclick or href?
+                    // the card's onclick is location.href, but if button inside also has onclick? 
+                    // In this design, button inside card also triggers same location due to card onclick bubble, but prevent double.
+                    if (e.target.closest('.btn-diagnosis')) {
+                        e.stopPropagation();  // allow button default but card will still redirect? we prevent double redirect
+                        // manual redirect using the same url
+                        const targetUrl = card.getAttribute('onclick')?.match(/'(.*?)'/)?.[1];
+                        if(targetUrl) window.location.href = targetUrl;
+                    }
+                });
+            });
+            
+            // auto-dismiss flash alerts after 4.5 seconds
+            const flashAlerts = document.querySelectorAll('.alert-custom');
+            if(flashAlerts.length) {
+                setTimeout(() => {
+                    flashAlerts.forEach(alert => {
+                        alert.style.transition = 'opacity 0.5s ease';
+                        alert.style.opacity = '0';
+                        setTimeout(() => {
+                            if(alert.parentNode) alert.remove();
+                        }, 400);
+                    });
+                }, 4500);
+            }
+
+            // subtle hover effect already via CSS
+            console.log("MediScanAI dashboard ready — Anemia & Cataract modules");
+        })();
+    </script>
+</body>
+</html>
